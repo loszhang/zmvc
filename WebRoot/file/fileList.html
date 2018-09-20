@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fileList.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+  </head>
+  <body>
+  <h4><a href="${ctx}/file/">上传文件</a></h4>
+  <h3>文件列表</h3>
+  
+  <table>
+  <tr>
+  		<td>序号</td>
+  		<td>文件编号</td>
+  		<td>文件名</td>
+  		<td>创建日期</td>
+  		<td>创建时间</td>
+  		<td>操作</td>
+  	</tr>
+  <#list list as file>
+  	<tr>
+  		<td>${file?counter}</td>
+  		<td>${file.id}</td>
+  		<td><input type="hidden" name="file_name" value="${file.file_name}">${file.file_name}</td>
+  		<td><#if file.create_date?? >${file.create_date}</#if>&nbsp;</td>
+  		<td><#if file.create_time?? >${file.create_time}</#if>&nbsp;</td>
+  		<td><button id="down">下载</button><button id="del">删除</button></td>
+  		<td><input type="hidden" name="file_path" value="${file.file_path}"></td>
+  		<td><input type="hidden" name="file_contenttype" value="${file.file_contenttype}"></td>
+  	</tr>
+  </#list>
+  <tr>
+  	<td><button id="prev">前一页</button></td>
+  	<td><button id="next">后一页</button></td>
+  	<td>当前第${page.pageNumber}页   总共${page.totalPage}页</td>
+  	<td><input id="pageNumber" type="hidden" value="${page.pageNumber}"><input id="totalPage" type="hidden" value="${page.totalPage}"></td>
+  </tr>
+  </table>
+  <hr>
+  </body>
+  <script type="text/javascript" src="/zmvc/js/jquery.js"></script>
+  <script>
+  $(document).ready(function() {
+		$("button[id='down']").click(function(event) {
+			//this.siblings().val();
+			var btn = $(this);
+			var td = btn.parent();
+			var tr = td.parent();
+			var first_td = tr.children(":first");
+			var next_first_td = first_td.next();
+			var id = next_first_td.text();
+			window.location.href="${ctx}/file/downloadByZmvc/"+id;
+		});
+		
+		$("button[id='del']").click(function(event) {
+			//this.siblings().val();
+			var btn = $(this);
+			var td = btn.parent();
+			var tr = td.parent();
+			var first_td = tr.children(":first");
+			var next_first_td = first_td.next();
+			var id = next_first_td.text();
+			window.location.href="${ctx}/file/delete/"+id;
+		});
+		
+		$("button[id='batchButton']").click(function(event){
+			var number = '';
+			$("input:checkbox[name='file']:checked").each(function(k){
+				var input = $(this);
+    			if(k == 0){
+        			number = $(this).val();
+    			}else{
+        			number += ','+$(this).val();
+   			 	}
+			});
+			number = number.replace(new RegExp(",","gm"),"-");
+			var path = "${ctx}/file/batchDownload/"+number;
+			window.location.href="${ctx}/file/batchDownload/"+number;
+		});
+		
+		$("button[id='prev']").click(function(){
+			var pageNumber = parseInt($("#pageNumber").val()) -1;
+			if (pageNumber == 0){
+				pageNumber =1;
+			}
+			window.location.href="${ctx}/file/look/?pageNumber="+pageNumber;
+			
+		});
+		
+		$("button[id='next']").click(function(){
+			var totalPage = $("#totalPage").val();
+			var pageNumber = parseInt($("#pageNumber").val()) +1;
+			if (pageNumber > totalPage){
+				pageNumber = totalPage;
+			}
+			window.location.href="${ctx}/file/look/?pageNumber="+pageNumber;
+			
+		});
+		
+	});
+  
+  </script>
+  
+</html>

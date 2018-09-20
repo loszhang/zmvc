@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>recharge.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+    <h3>充值</h3><h2><a href="/zmvc/account/">返回</a></h2>
+    <!-- <#if userAccount??> -->
+    <#if msg??><p>#{msg}</p></#if>
+	<form id="mainForm" action="/zmvc/account/recharge">
+		<table>
+			<tr>
+				<td><label>账户：${userAccount.id}<input id="userId" name="userId" type="hidden" value="${userAccount.id}"></label></td>
+			</tr>
+			<tr>
+				<td><label>开户号：${userAccount.account_id}<input id="account_id" name="account_id" type="hidden" value="${userAccount.account_id}"></label></td>
+			</tr>
+			<tr>
+				<td><label>账户余额：${userAccount.account}</label></td>
+			</tr>
+			<tr>
+				<td><label>充值金额：<input id="account" name="account" type="text"></label></td>
+			</tr>
+			<tr>
+				<td><input id="recharge" type="submit" value="充值"></td>
+			</tr>
+		</table>
+	</form> 
+	<!-- </#if>    -->
+	<br>
+  </body>
+  <script type="text/javascript" src="/zmvc/js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#recharge").click(function(event) {
+			var userId = $("#userId").val();
+			var account_id = $("#account_id").val();
+			var account = $("#account").val();
+			$.ajax({
+				url:"/zmvc/account/recharge/" +userId + "-"+account_id +"-" + account,
+				type: 'post',
+				dataType: 'json',
+				success: function (data) {
+					alert(data);
+				}
+			});
+		});	
+	});
+</script>
+</html>

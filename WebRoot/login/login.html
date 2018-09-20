@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>adduser.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+	<h3>
+		<a href="/zmvc/user/userList">后台管理</a>
+	</h3>
+	<#if errMsg??>
+		<p>${errMsg}</p>
+	</#if>
+
+	<form action="/zmvc/login/toLogin" method="post">
+		<table>
+			<tr>
+				<td>姓名：</td>
+				<td><input type="text" name="user.username" />
+				<td>
+			</tr>
+			<tr>
+				<td>密码：</td>
+				<td><input type="password" name="user.password" />
+				<td>
+			</tr>
+			<tr>
+				<td><input id="submit" type="submit" value="登录">
+				</td>
+				<td><input id="register" type="button" value="注册">
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+<script type="text/javascript" src="/zmvc/js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$("input[id='register']").click(function(event) {
+			window.location.href = "/zmvc/user/addSaveIndex";
+		});
+	});
+</script>
+</html>

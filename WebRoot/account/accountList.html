@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>userList.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+	<h3>
+		<a href="/zmvc/user/addSaveIndex">新增用户</a>
+	</h3>
+	<h3>
+		<a href="/zmvc/user/export">导出1</a>
+	</h3>
+	<a href="/${ctx}">aa</a>
+	bbb
+	<table>
+		<tr>
+			<td>编号</td>
+			<td>姓名</td>
+			<td>年龄</td>
+			<td>账户余额</td>
+			<td>操作</td>
+		</tr>
+		<#list userAccount as user>
+		<tr>
+			<td>${user.id}</td>
+			<td>${user.username}</td>
+			<td>${user.age}</td>
+			<td>${user.account}</td>
+			<td><div>
+					<input type="hidden" value="${user.id}" />
+				</div>
+				<div>
+					<button id="edit">编辑</button>
+					&nbsp; &nbsp; &nbsp;
+					<button id="del">删除</button>
+				</div></td>
+		</tr>
+		</#list>
+	</table>
+	<br>
+	<hr>
+	<div id="dis" style="display:none;">
+		<h3>修改用户信息</h3>
+		<form action="/zmvc/user/update" method="post">
+			<table>
+				<tr>
+					<td>ID:</td>
+					<td><input id="edit_id" name="user.id" type="text" 
+						value="" />
+					<td>
+				</tr>
+				<tr>
+					<td>姓名：</td>
+					<td><input id="edit_name" name="user.username" type="text"
+						value="" />
+					<td>
+				</tr>
+				<tr>
+					<td>年龄：</td>
+					<td><input id="edit_age" name="user.age" type="text"
+						value="" />
+					<td>
+				</tr>
+				<tr>
+					<td>密码：</td>
+					<td><input id="edit_password" name="user.password" type="text"
+						value="" />
+					<td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="修改">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+<script type="text/javascript" src="/zmvc/js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$("button[id='edit']").click(function(event) {
+			//this.siblings().val();
+			var btn = $(this);
+			var parent = btn.parent();
+			var parent_prev = parent.prev();
+			var pre_cild = parent_prev.children();
+			var id = pre_cild.val();
+
+			$.ajax({
+				url : "/zmvc/user/getUserById/" + id,
+				type : "get",
+				success : function(result) {
+					$("#dis").css("display", "block");
+					$("#edit_id").val(result.id);
+					$("#edit_name").val(result.username);
+					$("#edit_age").val(result.age);
+					$("#edit_password").val(result.password);
+					//alert(re.password);
+
+				}
+			});
+
+		});
+		$("button[id='del']").click(function(event) {
+			//this.siblings().val();
+			var btn = $(this);
+			alert(btn.attr("id"));
+			var parent = btn.parent();
+			var parent_prev = parent.prev();
+			var pre_cild = parent_prev.children();
+			var id = pre_cild.val();
+			$.ajax({
+				url : "/zmvc/user/delete/" + id,
+				type : "post",
+				success : function(result) {
+					//alert(result);
+					if (result == "true") {
+						window.location.href = "/zmvc/user/";
+					} else {
+						alert("删除失败！");
+					}
+				}
+			});
+
+		});
+	});
+</script>
+</html>

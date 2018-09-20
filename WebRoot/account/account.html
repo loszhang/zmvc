@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>userList.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+	<h2>我的</h2>
+	<h3>
+		<a id="openAccount">开卡</a>
+		<a href="/zmvc/user/shopIndex">商场</a>
+		<a href="/zmvc/user/shopCartIndex">我的购物车</a>
+		<a href="/zmvc/login/logout">退出</a>
+	</h3>
+	<table>
+		<tr>
+			<td>编号</td>
+			<td>姓名</td>
+			<td>账户ID</td>
+			<td>账户余额</td>
+			<td>操作</td>
+		</tr>
+		<#list  useraccount as ua>
+		<tr>
+			<td>${ua.id}<input id="userId" name="userId" type="hidden" value="${ua.id}"></td>
+			<td>${ua.username}</td>
+			<td>${ua.account_id}<input id="accountId" name="accountId" type="hidden" value="${ua.account_id}"></td>
+			<td>${ua.account}</td>
+			<td><button class="dd" id="${ua.account_id}">充值</button></td>
+		</tr>
+		</#list>
+	</table>
+	<br>
+	<hr>
+	
+</body>
+<script type="text/javascript" src="/zmvc/js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$(".dd").click(function(event) {
+			var btn = $(this);
+			var userId = $("#userId").val();
+			var accountId =btn.attr("id");
+			window.location.href = "/zmvc/account/walletIndex/"+userId +"-" + accountId;
+		});	
+		$("a[id='openAccount']").click(function(event) {
+			var userId = $("#userId").val();
+			;
+			window.location.href = "/zmvc/account/openAccount/"+userId;
+		});
+		
+		
+	});
+</script>
+</html>
